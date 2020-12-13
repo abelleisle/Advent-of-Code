@@ -34,7 +34,7 @@ fn part2(f: std::fs::File) -> i32 {
     let len = nums.len();
     for i in 0..len-3 {
         for j in i..len-2 {
-            for k in i..len-1 {
+            for k in j..len-1 {
                 if ((nums[i] + nums[j] + nums[k]) == 2020) {
                     return nums[i] * nums[j] * nums[k];
                 }
