@@ -4,14 +4,15 @@
 
 int s(int r, std::vector<int> i)
 {
-    std::unordered_map<int, int> m;
-    for (unsigned n = 0; n < i.size(); n++)
-        m[i[n]] = n;
+    std::vector<int> m (r);
+    int c = 1;
+    for (unsigned n = 0; n < i.size(); c++,n++)
+        m[i[n]] = c;
 
-    int l,u = 0;
-    for (int c = i.size(); c < r; c++) {
+    int l = i.back(),u = 0;
+    for (; c <= r; c++) {
         l = u;
-        if (m.count(u)) {
+        if (m[u] != 0) {
             u = c - m[u];
         } else {
             u = 0;
