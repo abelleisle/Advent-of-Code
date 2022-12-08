@@ -43,7 +43,7 @@ fn fmt_dur(dur: Duration) -> String {
 fn solve_day(day_num: u32) {
     // Read input file
     let cwd = env::current_dir().unwrap();
-    let filename = cwd.join("days").join(format!("day{:02}/input.txt", day_num));
+    let filename = cwd.join("src/days").join(format!("day{:02}/input.txt", day_num));
     // println!("Reading {}", filename.display());
     let input = fs::read_to_string(filename.clone());
 
@@ -57,6 +57,7 @@ fn solve_day(day_num: u32) {
             advent_of_code::ANSI_BOLD,
             advent_of_code::ANSI_RESET,
             day_num);
+        println!("  {}", filename.display());
         return;
     }
 
