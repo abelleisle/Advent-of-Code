@@ -1,10 +1,10 @@
 /* Don't look this is gross */
-fn tree_at(x: isize, y: isize, trees: &Vec<&str>) -> isize {
-    return (trees[y as usize].chars().nth(x as usize).unwrap() as isize) - '0' as isize;
+fn tree_at(x: isize, y: isize, trees: &Vec<Vec<isize>>) -> isize {
+    return trees[y as usize][x as usize];
 }
 
 /* Check to see if a tree is visible */
-fn is_visible(x: isize, y: isize, trees: &Vec<&str>) -> bool {
+fn is_visible(x: isize, y: isize, trees: &Vec<Vec<isize>>) -> bool {
     let height: isize = trees.len() as isize;
     let width : isize = trees[0].len() as isize;
 
@@ -29,7 +29,7 @@ fn is_visible(x: isize, y: isize, trees: &Vec<&str>) -> bool {
 }
 
 /* Find the tree's scienic score */
-fn scienic(x: isize, y: isize, trees: &Vec<&str>) -> isize {
+fn scienic(x: isize, y: isize, trees: &Vec<Vec<isize>>) -> isize {
     let height: isize = trees.len() as isize;
     let width : isize = trees[0].len() as isize;
 
@@ -57,11 +57,7 @@ fn scienic(x: isize, y: isize, trees: &Vec<&str>) -> isize {
     return score;
 }
 
-pub fn parse(input: &str) -> Vec<&str> {
-    return input.lines().collect();
-}
-
-pub fn part1(trees: Vec<&str>) -> isize {
+pub fn part1(trees: Vec<Vec<isize>>) -> isize {
     let height      = trees.len();
     let width       = trees[0].len();
     let mut visible = 0;
@@ -77,7 +73,7 @@ pub fn part1(trees: Vec<&str>) -> isize {
     return visible;
 }
 
-pub fn part2(trees: Vec<&str>) -> isize {
+pub fn part2(trees: Vec<Vec<isize>>) -> isize {
     let height      = trees.len();
     let width       = trees[0].len();
     let mut score   = 0;
@@ -89,4 +85,13 @@ pub fn part2(trees: Vec<&str>) -> isize {
     }
 
     return score;
+}
+
+pub fn parse(input: &str) -> Vec<Vec<isize>> {
+    return input
+        .lines()
+        .map(|l| l.chars()
+            .map(|c| (c as isize) - '0' as isize)
+            .collect()
+        ).collect();
 }
