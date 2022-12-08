@@ -4,7 +4,7 @@ use regex::Regex;
 
 use std::collections::HashSet;
 
-fn first_unique<T: std::hash::Hash + std::cmp::Eq>(v: &Vec<T>, n: usize) -> Option<usize> {
+fn first_unique <T: std::hash::Hash + std::cmp::Eq> (v: &Vec<T>, n: usize) -> Option<usize> {
     for i in 0..v.len()-n {
         let s = &v[i..i+n];
         let h : HashSet<&T> = s.iter().collect();
