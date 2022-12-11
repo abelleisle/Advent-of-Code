@@ -1,6 +1,7 @@
 use std::time::{Duration, Instant};
 
 // Days
+pub mod helper;
 pub mod days;
 
 pub const ANSI_ITALIC: &str = "\x1b[3m";
@@ -28,6 +29,12 @@ pub fn run_day(day: u32, input: &str) ->
             let parsed = days::day10::parse(input);
             let part1 = run_part!(days::day10::part1, parsed.clone());
             let part2 = run_part!(days::day10::part2, parsed.clone());
+            return (Some(part1), Some(part2));
+        },
+        11 => {
+            let parsed = days::day11::parse(input);
+            let part1 = run_part!(days::day11::part1, parsed.clone());
+            let part2 = run_part!(days::day11::part2, parsed.clone());
             return (Some(part1), Some(part2));
         },
         _ => {
