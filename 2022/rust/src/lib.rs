@@ -13,6 +13,48 @@ pub fn run_day(day: u32, input: &str) ->
       Option<(Duration, String)> )
 {
     match day {
+        1 => {
+            let parsed = days::day01::parse(input);
+            let part1 = run_part!(days::day01::part1, parsed.clone());
+            let part2 = run_part!(days::day01::part2, parsed.clone());
+            return (Some(part1), Some(part2));
+        },
+        2 => {
+            let parsed = days::day02::parse(input);
+            let part1 = run_part!(days::day02::part1, parsed.clone());
+            let part2 = run_part!(days::day02::part2, parsed.clone());
+            return (Some(part1), Some(part2));
+        },
+        3 => {
+            let parsed = days::day03::parse(input);
+            let part1 = run_part!(days::day03::part1, parsed.clone());
+            let part2 = run_part!(days::day03::part2, parsed.clone());
+            return (Some(part1), Some(part2));
+        },
+        4 => {
+            let parsed = days::day04::parse(input);
+            let part1 = run_part!(days::day04::part1, parsed.clone());
+            let part2 = run_part!(days::day04::part2, parsed.clone());
+            return (Some(part1), Some(part2));
+        },
+        5 => {
+            let parsed = days::day05::parse(input);
+            let part1 = run_part!(days::day05::part1, parsed.clone());
+            let part2 = run_part!(days::day05::part2, parsed.clone());
+            return (Some(part1), Some(part2));
+        },
+        6 => {
+            let parsed = days::day06::parse(input);
+            let part1 = run_part!(days::day06::part1, parsed.clone());
+            let part2 = run_part!(days::day06::part2, parsed.clone());
+            return (Some(part1), Some(part2));
+        },
+        7 => {
+            let parsed = days::day07::parse(input);
+            let part1 = run_part!(days::day07::part1, parsed.clone());
+            let part2 = run_part!(days::day07::part2, parsed.clone());
+            return (Some(part1), Some(part2));
+        },
         8 => {
             let parsed = days::day08::parse(input);
             let part1 = run_part!(days::day08::part1, parsed.clone());
