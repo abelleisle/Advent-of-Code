@@ -1,4 +1,4 @@
-use crate::helper::nums_on_line;
+use crate::helper::{nums_in_str, first_num_in_str};
 
 #[derive(Clone)]
 pub enum Op {
@@ -35,10 +35,10 @@ impl Monkey {
             let vals = end.trim_end().trim_start();
             match instr {
                 "Starting items" => {
-                    monkey.items.extend(nums_on_line(vals, &[' ', ',']).iter());
+                    monkey.items.extend(nums_in_str(vals).iter());
                 },
                 "Operation" => {
-                    let x = *nums_on_line(vals, &[' ']).last().unwrap_or(&-1);
+                    let x = first_num_in_str(vals).unwrap_or(-1);
                     if vals.find('*').is_some() {
                         monkey.oper = Op::Mult(x);
                     } else if vals.find('+').is_some() {
@@ -48,15 +48,15 @@ impl Monkey {
                     }
                 },
                 "Test" => {
-                    let x = *nums_on_line(vals, &[' ']).last().unwrap_or(&-1);
+                    let x = first_num_in_str(vals).unwrap_or(-1);
                     monkey.test = x;
                 },
                 "If true" => {
-                    let x = *nums_on_line(vals, &[' ']).last().unwrap_or(&0);
+                    let x = first_num_in_str(vals).unwrap_or(0);
                     monkey.testr.0 = x;
                 },
                 "If false" => {
-                    let x = *nums_on_line(vals, &[' ']).last().unwrap_or(&0);
+                    let x = first_num_in_str(vals).unwrap_or(0);
                     monkey.testr.1 = x;
                 },
                 &_ => panic!("Invalid expr")
