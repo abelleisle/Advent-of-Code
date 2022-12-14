@@ -85,6 +85,12 @@ pub fn run_day(day: u32, input: &str) ->
             let part2 = run_part!(days::day12::part2, parsed.clone());
             return (Some(part1), Some(part2));
         },
+        13 => {
+            let parsed = days::day13::parse(input);
+            let part1 = run_part!(days::day13::part1, parsed.clone());
+            let part2 = run_part!(days::day13::part2, parsed.clone());
+            return (Some(part1), Some(part2));
+        },
         _ => {
             return (None, None);
         }
