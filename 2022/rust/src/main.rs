@@ -63,13 +63,23 @@ fn solve_day(day_num: u32) {
 
     let to_run = advent_of_code::run_day(day_num, &input.unwrap());
 
-    if to_run.0.is_none() && to_run.1.is_none() {
+    if to_run.1.is_none() && to_run.2.is_none() {
         println!("  Not implemented");
         return;
     }
 
+    // Run parser
+    if let Some(parser) = to_run.0 {
+        println!("  {}Parser{}: {}{}{}\n",
+            advent_of_code::ANSI_BOLD,
+            advent_of_code::ANSI_RESET,
+            advent_of_code::ANSI_ITALIC,
+            fmt_dur(parser),
+            advent_of_code::ANSI_RESET);
+    }
+
     // Run part 1
-    if let Some(part1) = to_run.0 {
+    if let Some(part1) = to_run.1 {
         println!("  {}Part 1{}", advent_of_code::ANSI_BOLD, advent_of_code::ANSI_RESET);
         println!("    Result: {}  {}{}{}\n",
             part1.1,
@@ -79,7 +89,7 @@ fn solve_day(day_num: u32) {
     }
 
     // Run part 1
-    if let Some(part2) = to_run.1 {
+    if let Some(part2) = to_run.2 {
         println!("  {}Part 2{}", advent_of_code::ANSI_BOLD, advent_of_code::ANSI_RESET);
         println!("    Result: {}  {}{}{}\n",
             part2.1,
