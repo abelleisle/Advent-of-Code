@@ -10,7 +10,7 @@ pub fn nums_in_str<T: std::str::FromStr + std::fmt::Display>(line: &str) -> Vec<
     let mut number = (0,0);
 
     for (i,c) in line.chars().enumerate() {
-        let is_number = c.is_digit(10);
+        let is_number = c.is_digit(10) || c.eq(&'-');
         // Char is number
         if is_number {
             if in_number == false {

@@ -28,6 +28,7 @@ pub fn run_day(day: u32, input: &str) ->
         12 => run_day!(day12, input),
         13 => run_day!(day13, input),
         14 => run_day!(day14, input),
+        15 => run_day!(day15, input),
         _ => {
             return (None, None, None);
         }
