@@ -1,6 +1,6 @@
-use itertools::Itertools;
 use crate::helper::nums_in_str;
-use std::collections::{HashSet, BTreeSet};
+use std::collections::HashSet;
+use rangemap::set::RangeSet;
 
 type Pos = (isize, isize);
 type Input = (Vec<(Pos, isize)>, HashSet<Pos>);
@@ -26,28 +26,34 @@ pub fn part1(input: Input) -> usize {
     /* Find how many beacons exist at the target y */
     let bat = input.1.iter().filter(|b| b.1.eq(&target)).count();
 
-    let mut no_b : HashSet<isize> = HashSet::new();
+    let mut ranges : RangeSet<isize> = RangeSet::new();
 
     for ((x, y), d) in input.0.iter() {
-        let dist = (y-target).abs();
+        let dist : isize = (y-target).abs();
         if dist <= *d {
-            let r = (dist-*d).abs();
-            for tx in x-r..=x+r {
-                no_b.insert(tx);
-            }
+            let r : isize = (dist-*d).abs();
+            ranges.insert(x-r..x+r+1);
         }
     }
 
-    return no_b.len() - bat;
+    let mut total_range : usize = 0;
+    for r in ranges {
+        total_range += (r.end - r.start) as usize;
+    }
+
+    return total_range - bat;
 }
 
 pub fn part2(input: Input) -> isize {
-    let sensors : Vec<_> = input.0.iter().sorted_by(|a,b| a.1.cmp(&b.1)).rev().collect();
+    let sensors : Vec<_> = input.0.iter().collect();
 
     /* Check overlap. Uses signed distance fields concept */
-    let inside_dist = |x: isize, y: isize| -> Option<isize> {
+    let inside_dist = |x: isize, y: isize, tx: isize, ty: isize| -> Option<isize> {
         let mut largest_dist = None;
         for ((sx, sy), sd) in sensors.iter() {
+            if *sx == tx && *sy == ty {
+                continue;
+            }
             let sdist : isize = (sx.abs_diff(x) + sy.abs_diff(y)) as isize;
             if sdist > *sd {
                 continue;
@@ -82,7 +88,7 @@ pub fn part2(input: Input) -> isize {
                 /* Find the largest overlap in another sensor's range. This will
                  * allow 'i' to jump forward by the largest overlap. This will
                  * reduce the scanning range. */
-                let d = inside_dist(px, py);
+                let d = inside_dist(px, py, *sx, *sy);
                 if d.is_none() {
                     return 400000*px + py;
                 }
