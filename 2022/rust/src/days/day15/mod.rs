@@ -1,6 +1,6 @@
 use itertools::Itertools;
 use crate::helper::nums_in_str;
-use std::collections::HashSet;
+use std::collections::{HashSet, BTreeSet};
 
 type Pos = (isize, isize);
 type Input = (Vec<(Pos, isize)>, HashSet<Pos>);
@@ -42,27 +42,52 @@ pub fn part1(input: Input) -> usize {
 }
 
 pub fn part2(input: Input) -> isize {
-    let pairs : Vec<_> = input.0.iter().sorted_by(|a,b| a.1.cmp(&b.1)).rev().collect();
-    /* Try every y coord in range */
-    for ty in 0..=4000000 {
-        /* Try every x coord in range */
+    let sensors : Vec<_> = input.0.iter().sorted_by(|a,b| a.1.cmp(&b.1)).rev().collect();
 
-        let mut tx : isize = 0;
-        'xscan: while tx <= 4000000 {
-            /* While checking each coord, check for sensor intersection */
-            for ((x,y),bdist) in pairs.iter() {
-                let sdist : isize = (x.abs_diff(tx) + y.abs_diff(ty)) as isize;
-                /* If these beacons overlap */
-                if *bdist >= sdist {
-                    let ydiff = y.abs_diff(ty) as isize;     // Get height diff
-                    let r = ydiff.abs_diff(*bdist) as isize; // Get width
-                    tx = x+r+1; // Skip scanning this sensor range
-                    continue 'xscan;
-                }
+    /* Check overlap. Uses signed distance fields concept */
+    let inside_dist = |x: isize, y: isize| -> Option<isize> {
+        let mut largest_dist = None;
+        for ((sx, sy), sd) in sensors.iter() {
+            let sdist : isize = (sx.abs_diff(x) + sy.abs_diff(y)) as isize;
+            if sdist > *sd {
+                continue;
             }
+            let dfe = ((sd-sdist) / 2) + 1;
+            if largest_dist.is_none() || largest_dist.unwrap() < dfe {
+                largest_dist = Some(dfe);
+            }
+        }
+        return largest_dist;
+    };
 
-            /* This coordinate isn't in sensor range */
-            return 400000*tx + ty;
+    /* Check each sensor's range */
+    for ((sx,sy),sd) in sensors.iter() {
+        /* Check the edges of each sensor  */
+        for (da, db) in [((0,1),(1,0)),((1,0),(0,-1)),((0,-1),(-1,0)),((-1,0),(0,1))] {
+            /* Get corner coords */
+            let (ax, ay) = (sx + da.0*(sd+1), sy + da.1*(sd+1));
+            let (bx, by) = (sx + db.0*(sd+1), sy + db.1*(sd+1));
+            /* Get corner deltas */
+            let (dx, dy) = ((bx-ax).clamp(-1, 1), (by-ay).clamp(-1, 1));
+            assert!(ax.abs_diff(bx) == ay.abs_diff(by)); // Make sure we're square
+            let mut i : isize = 0;
+            let dline : isize = (ax-bx).abs(); // Length of diagonal
+            /* Scan along edge */
+            while i <= dline {
+                let (px, py) = (ax + i*dx, ay + i*dy);
+                if px < 0 || px > 4000000 || py < 0 || py > 4000000 {
+                    i += 1;
+                    continue;
+                }
+                /* Find the largest overlap in another sensor's range. This will
+                 * allow 'i' to jump forward by the largest overlap. This will
+                 * reduce the scanning range. */
+                let d = inside_dist(px, py);
+                if d.is_none() {
+                    return 400000*px + py;
+                }
+                i += d.unwrap();
+            }
         }
     }
 
