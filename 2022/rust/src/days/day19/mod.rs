@@ -48,7 +48,7 @@ fn geode_max(bp: Blueprint, time: isize) -> isize {
         (isize, isize, isize, isize), // Ore:    Ore, Clay, Obby, Geode
         isize                         // Time:   time...
     );
-    let mut seen  : HashSet<Stack> = HashSet::new(); // Process this..
+    let mut seen  : HashSet<Stack>  = HashSet::new();
     let mut state : VecDeque<Stack> = VecDeque::from(
         [((1,0,0,0),(0,0,0,0), time)]
     );
@@ -70,6 +70,9 @@ fn geode_max(bp: Blueprint, time: isize) -> isize {
         /* 1.21 Jiga-watts!?!?! */
         if t == 0 { continue; }
 
+        /* Reduce runtime by limiting the amount of ore production
+         * to the max amount we can spend per turn
+         *  - Credit to jonathon_paulson for the idea */
         /* Highest ore cost */
         let moc = *[bp.ore, bp.clay, bp.obby.0, bp.geode.0]
             .iter().max().unwrap() as isize;
@@ -87,8 +90,7 @@ fn geode_max(bp: Blueprint, time: isize) -> isize {
         s = ((ro,rc,rb,rg),(o,c,b,g),t);
 
         /* Deja-vu??? */
-        if seen.contains(&s) { continue; }
-        seen.insert(s);
+        if !seen.insert(s) { continue; }
 
         /* Next state if we buy nothing */
         state.push_back(((  ro,   rc,   rb,   rg),
