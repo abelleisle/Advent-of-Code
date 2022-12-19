@@ -148,8 +148,6 @@ impl ValveList {
     }
 }
 
-/* Memoized dfs */
-
 pub fn part1(input: Input) -> isize {
     let mut v = ValveList::new(&input);
     let flows = v.flows.iter()
