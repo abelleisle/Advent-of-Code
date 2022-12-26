@@ -145,7 +145,7 @@ pub fn sand_fall(cave: &mut Input, floor: isize, fall: bool, animate: bool, fps:
 pub fn part1(mut input: Input) -> usize {
     let floor = input.iter().map(|k| k.0.1).max().unwrap();
     loop {
-        if !sand_fall(&mut input, floor, false, true, 100) {
+        if !sand_fall(&mut input, floor, false, false, 100) {
             break;
         }
     }

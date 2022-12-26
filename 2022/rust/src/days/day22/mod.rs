@@ -15,20 +15,6 @@ pub enum Dir {
 type Input = (Vec<Vec<char>>, Vec<Dir>);
 
 pub fn parse(input: &str) -> Input {
-//     let input = r"        ...#
-//         .#..
-//         #...
-//         ....
-// ...#.......#
-// ........#...
-// ..#....#....
-// ..........#.
-//         ...#....
-//         .....#..
-//         .#......
-//         ......#.
-//
-// 10R5L5R10L4R5L5";
     let mut output : Input = (vec![], vec![]);
     let (map, dirs) = input.split_once("\n\n").unwrap();
 
@@ -72,21 +58,6 @@ fn get (grid: &Input, pos: (isize, isize)) -> char {
     newp.0 = newp.0.rem_euclid(grid.0[newp.1 as usize].len() as isize);
     return grid.0[newp.1 as usize][newp.0 as usize];
 }
-
-/* CPOS
- *     \/ origin
- *  .. 10 20
- *  .. 11
- *  02 12
- *  03 ..
- *
- * 10 = 0
- * 20 = 1
- * 11 = 2
- * 12 = 3
- * 02 = 4
- * 03 = 5
- */
 
 struct Portal {
     // ((x,y),width,horizontal?)
@@ -132,13 +103,13 @@ impl Portal {
         let tp = match to {
             0 => self.p1,
             1 => self.p2,
-            _ => panic!("FUCK TO")
+            _ => panic!("Incorrect to portal??")
         };
 
         let fp = match fr {
             0 => self.p1,
             1 => self.p2,
-            _ => panic!("FUCK FROM")
+            _ => panic!("Incorrect from portal??")
         };
 
         if tele {
@@ -222,13 +193,6 @@ fn next_pos(grid: &Input, mut pos: (isize, isize), mut dir: (isize, isize), part
 }
 
 fn solve(input: &Input, part2: bool) -> isize {
-    // for yc in input.0.iter() {
-    //     for xc in yc.iter() {
-    //         print!("{xc}");
-    //     }
-    //     println!("");
-    // }
-
     let mut start : (isize, isize) = (0,0);
     let mut dir : (isize, isize) = (1,0);
     'outer: for (y, yc) in input.0.iter().enumerate() {
@@ -240,39 +204,24 @@ fn solve(input: &Input, part2: bool) -> isize {
         }
     }
 
-    // println!("Start: {},{}", start.0, start.1);
-
     let mut pos = start;
 
     for d in input.1.iter() {
-        let pdd = match dir {
-            ( 1, 0) => 0,
-            ( 0, 1) => 1,
-            (-1, 0) => 2,
-            ( 0,-1) => 3,
-            _ => panic!("Shit")
-        };
         match d {
             Dir::Go(x) => {
-                // println!("step {} {} {} {}",pos.1+1,pos.0+1,pdd,x);
                 'inner: for _a in 0..*x {
                     let np = next_pos(&input, pos, dir, part2);
-                    // println!("{},{}",np.0.0,np.0.1);
                     let gc = get(&input, np.0);
                     assert!(gc != ' ');
                     if gc == '#' {
-                        // println!("wall");
                         break 'inner;
                     } else {
                         pos = np.0;
                         dir = np.1;
                     }
-                    // assert!(np.0.0 != 0 && np.0.1 != 149);
-                    // println!("{},{}",pos.1+1,pos.0+1);
                 }
             }
             Dir::Turn(c) => {
-                // println!("step {} {} {} {}",pos.1+1,pos.0+1,pdd,c);
                 match c {
                     'R' => {
                         dir = (-dir.1,  dir.0);
@@ -280,7 +229,7 @@ fn solve(input: &Input, part2: bool) -> isize {
                     'L' => {
                         dir = ( dir.1, -dir.0);
                     },
-                    _ => panic!("BAD GAME")
+                    _ => panic!("Unknown turn direction")
                 }
             }
         }
@@ -293,7 +242,7 @@ fn solve(input: &Input, part2: bool) -> isize {
         ( 0, 1) => 1,
         (-1, 0) => 2,
         ( 0,-1) => 3,
-        _ => panic!("Shit")
+        _ => panic!("Unknown dir")
     };
 
     return col + row + ddd;

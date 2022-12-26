@@ -55,11 +55,6 @@ impl Valley {
             rotate.step();
             v.repeat += 1;
         }
-        println!("Width:    {}", v.width);
-        println!("Height:   {}", v.height);
-        println!("Entrance: {},{}", v.entrance.0, v.entrance.1);
-        println!("Exit:     {},{}", v.exit.0, v.exit.1);
-        println!("Rotates:  {}", v.repeat);
 
         return v;
     }
@@ -79,14 +74,6 @@ impl Valley {
 type Input = Valley;
 
 pub fn parse(input: &str) -> Input {
-//     let input
-//     = r"#.######
-// #>>.<^<#
-// #.<..<<#
-// #>v.><>#
-// #<^v^^>#
-// ######.#";
-
     return Valley::new(input);
 }
 
