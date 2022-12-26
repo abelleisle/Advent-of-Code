@@ -1,3 +1,8 @@
+#![allow(unused_imports)]
+use std::collections::{HashSet, HashMap, VecDeque};
+use crate::helper::{nums_in_str, first_num_in_str};
+use itertools::Itertools;
+
 type Input<'a> = Vec<&'a str>;
 
 pub fn parse(input: &str) -> Input {
