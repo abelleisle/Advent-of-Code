@@ -1,0 +1,9 @@
+# Shamelessly stolen from ziglang/zig
+
+zig-cache/
+zig-out/
+/release/
+/debug/
+/build/
+/build-*/
+/docgen_tmp/
