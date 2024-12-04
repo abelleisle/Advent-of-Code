@@ -2,7 +2,7 @@
 
 This is a stub mirror. The full source code for this commit is at:
 
-https://git.bitcicle.com/andy/Advent-of-Code/src/commit/ea266ed44a3f22b353c58f7200867ae839120de0
+https://git.bitcicle.com/andy/Advent-of-Code/src/commit/b8cb4cd044f6e8ee000bc2b740f4ea69bf0cfe4c
 
 To browse or clone the full repository, visit:
 
